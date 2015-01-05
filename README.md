@@ -1,0 +1,4 @@
+KillChat
+========
+
+Addon for CustomChat
