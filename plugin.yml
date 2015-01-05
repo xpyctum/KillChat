@@ -1,0 +1,7 @@
+name: KillChat
+version: 1.0.0
+api: 1.7.1
+main: Praxthisnovcht\KillChat\Main
+author: [Praxthisnovcht]
+depend: [CustomChat]
+description: Adds Counter Kill for CustomChat
