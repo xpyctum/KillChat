@@ -50,6 +50,7 @@ class KillChat extends PluginBase implements Listener
             //add Kill point here
         }
         if ($cause instanceof Player) {
+            $cause->sendMessage("You have been KILLED by " . $killer . "")
             //add Death point here
         }
         else {
