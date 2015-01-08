@@ -11,20 +11,21 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\Listener;
 use Praxthisnovcht\CustomChat;
 
-class KillChat extends PluginBase implements Listener {
+class KillChat extends PluginBase implements Listener
+{
 
     public function onEnable()
     {
         $Name = $user->getPlayer()->getName();
         if (!(file_exists($this->plugin->getDataFolder() . "Counter/" . strtolower($Name) . ".yml"))) {
             return new Config($this->plugin->getDataFolder() . "Counter/" . strtolower($Name) . ".yml", Config::YAML, array(
-                    "Name" => $Name,
+                "Name" => $Name,
 
 
-                    "Kills" => $this->plugin->getMurderDone()->getName(),
+                "Kills" => $this->plugin->getMurderDone()->getName(),
 
 
-                    "Deaths" => $this->plugin->getDeathsDone()->getName(),
+                "Deaths" => $this->plugin->getDeathsDone()->getName(),
 
             ));
         } else {
@@ -34,4 +35,27 @@ class KillChat extends PluginBase implements Listener {
         $this->getLogger()->info("KillChat has been enabled.");
     }
 
+    public function onDisable()
+    {
+        $this->getLogger()->info("KillChat has been disable.");
+    }
+
+    public function onPlayerDeath(EntityDeathEvent $event)
+    {
+        $entity = $event->getEntity();
+        $cause = $entity->getLastDamageCause();
+        $killer = $cause->getDamager();
+        if ($killer instanceof Player) {
+            $killer->sendMessage("You Have KILLED " . $cause . "");
+            //add Kill point here
+        }
+        if ($cause instanceof Player) {
+            $cause->sendMessage("You have been KILLED by " . $killer . "")
+            //add Death point here
+        }
+        else {
+            $this->getLogger()->info(TextFormat::BLUE . "KillChat Error");
+        }
+    }
 }
+
