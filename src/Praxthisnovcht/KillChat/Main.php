@@ -38,6 +38,7 @@ class KillChat extends PluginBase implements Listener
 
     public function onDisable()
     {
+    	$this->config->save ();
         $this->getLogger()->info("KillChat has been disable.");
     }
 	public function onJoin(PlayerJoinEvent $event) {
@@ -45,9 +46,9 @@ class KillChat extends PluginBase implements Listener
 		}
 		if (! isset ( $this->Config::YAML [$event->getPlayer ()->getName ()] )) {
 		    // $this->Config::YAML may be fals 
-			$this->Config::YAML [$event->getPlayer ()->getName ()] ["kill"] = 0;
+			$this->Config::YAML [$event->getPlayer ()->getName ()] ["kills"] = 0;
 			// solution for CustomChat departure 0
-			$this->Config::YAML [$event->getPlayer ()->getName ()] ["death"] = 0;
+			$this->Config::YAML [$event->getPlayer ()->getName ()] ["deaths"] = 0;
 		}
 	}
     public function onPlayerDeath(EntityDeathEvent $event)
@@ -57,6 +58,7 @@ class KillChat extends PluginBase implements Listener
         $killer = $cause->getDamager();
         if ($killer instanceof Player) {
             $killer->sendMessage("You Have KILLED " . $cause . "");
+            $this->Config::YAML [$Kills->getName ()] ["kills"] ++; // check
             //add Kill point here
         }
         if ($cause instanceof Player) {
