@@ -14,7 +14,7 @@ use Praxthisnovcht\CustomChat;
 
 class KillChat extends PluginBase implements Listener
 {
-
+private $config;
     public function onEnable()
     {
         $Name = $user->getPlayer()->getName();
@@ -32,6 +32,7 @@ class KillChat extends PluginBase implements Listener
         } else {
             return new Config($this->plugin->getDataFolder() . "Counter/" . strtolower($Name) . ".yml", Config::YAML, array());
         }
+        $this->config = $this->config->getAll ();
         $this->saveDefaultConfig();
         $this->getLogger()->info("KillChat has been enabled.");
     }
@@ -44,11 +45,11 @@ class KillChat extends PluginBase implements Listener
 	public function onJoin(PlayerJoinEvent $event) {
 		if (! isset ( $this->users [$event->getPlayer ()->getName ()] )) {
 		}
-		if (! isset ( $this->Config::YAML [$event->getPlayer ()->getName ()] )) {
+		if (! isset ( $this->config [$event->getPlayer ()->getName ()] )) {
 		    // $this->Config::YAML may be fals 
-			$this->Config::YAML [$event->getPlayer ()->getName ()] ["kills"] = 0;
+			$this->config [$event->getPlayer ()->getName ()] ["kills"] = 0;
 			// solution for CustomChat departure 0
-			$this->Config::YAML [$event->getPlayer ()->getName ()] ["deaths"] = 0;
+			$this->config [$event->getPlayer ()->getName ()] ["deaths"] = 0;
 		}
 	}
     public function onPlayerDeath(EntityDeathEvent $event)
@@ -58,7 +59,7 @@ class KillChat extends PluginBase implements Listener
         $killer = $cause->getDamager();
         if ($killer instanceof Player) {
             $killer->sendMessage("You Have KILLED " . $cause . "");
-            $this->Config::YAML [$Kills->getName ()] ["kills"] ++; // check
+            $this->config [$Kills->getName ()] ["kills"] ++; // check
             //add Kill point here
         }
         if ($cause instanceof Player) {
