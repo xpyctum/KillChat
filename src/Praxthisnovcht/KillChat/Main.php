@@ -7,6 +7,7 @@ use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\Listener;
 use Praxthisnovcht\CustomChat;
@@ -39,7 +40,16 @@ class KillChat extends PluginBase implements Listener
     {
         $this->getLogger()->info("KillChat has been disable.");
     }
-
+	public function onJoin(PlayerJoinEvent $event) {
+		if (! isset ( $this->users [$event->getPlayer ()->getName ()] )) {
+		}
+		if (! isset ( $this->Config::YAML [$event->getPlayer ()->getName ()] )) {
+		    // $this->Config::YAML may be fals 
+			$this->Config::YAML [$event->getPlayer ()->getName ()] ["kill"] = 0;
+			// solution for CustomChat departure 0
+			$this->Config::YAML [$event->getPlayer ()->getName ()] ["death"] = 0;
+		}
+	}
     public function onPlayerDeath(EntityDeathEvent $event)
     {
         $entity = $event->getEntity();
