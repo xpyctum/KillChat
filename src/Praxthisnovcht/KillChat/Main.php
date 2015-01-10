@@ -42,6 +42,24 @@ private $config;
     	$this->config->save ();
         $this->getLogger()->info("KillChat has been disable.");
     }
+    /* ------------------- API ---------------- */
+    public function getKills(Player $player){
+    	if($player instanceof Player){
+    		$p = $player->getPlayer();
+    		return $this->config [$p()->getName()]["kills"];
+    	}else{
+    		return null; //Check NULL in your API!
+    	}
+    }
+    public function getDeaths(Player $player){
+    	if($player instanceof Player){
+    		$p = $player->getPlayer();
+    		return $this->config [$p()->getName()]["deaths"];
+    	}else{
+    		return null; //Check NULL in your API!
+    	}
+    }
+    /* ------------------- END API ------------ */
 	public function onJoin(PlayerJoinEvent $event) {
 		if (! isset ( $this->users [$event->getPlayer ()->getName ()] )) {
 		}
